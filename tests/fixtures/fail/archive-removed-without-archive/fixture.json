@@ -1,0 +1,1 @@
+{ "rule": "archive/removed-without-archive", "base": true, "remove": ["screens/auth/signup--default.html"] }

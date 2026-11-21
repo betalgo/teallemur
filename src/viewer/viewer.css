@@ -1,0 +1,454 @@
+/* The viewer's own layout, on top of the design system's tokens and
+   components (src/viewer/design/). Built only from tokens: no colours, font
+   names or radii of its own. No external resources. */
+
+:root { color-scheme: light; }
+
+.dv-body { background: var(--color-ground); }
+
+.dv-noscript,
+.dv-empty {
+  padding: 24px 0;
+  color: var(--color-ink-soft);
+  font-size: 14px;
+}
+
+.dv-offscreen { position: fixed; left: -9999px; top: 0; opacity: 0; }
+
+[hidden] { display: none !important; }
+
+/* The mark is the copied master (assets/mark.svg) shown as an image in its
+   own colours; the components' .lockup .mark rules size it. */
+
+.top-bar__start .lockup { flex: none; }
+.dv-quiet-link { color: inherit; text-decoration: underline; text-decoration-color: var(--color-rule-strong); text-underline-offset: 3px; }
+.dv-quiet-link:hover { text-decoration-color: var(--color-ink-faint); }
+
+/* ------------------------------------------------------------- the board */
+
+.dv-board-app {
+  display: grid;
+  /* One column no wider than the screen, so a top bar without sizes gives way on phones. */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.dv-main { display: grid; grid-template-columns: 272px minmax(0, 1fr); min-height: 0; }
+.dv-sidebar { min-height: 0; }
+.dv-show-sidebar { display: none; }
+
+@media (min-width: 768px) {
+  .dv-board-app[data-sidebar="hidden"] .dv-main { grid-template-columns: minmax(0, 1fr); }
+  .dv-board-app[data-sidebar="hidden"] .dv-sidebar { display: none; }
+  .dv-board-app[data-sidebar="hidden"] .dv-show-sidebar { display: inline-flex; margin: 0 -8px 0 -10px; }
+}
+
+.dv-tree-group { display: flex; flex-direction: column; gap: 1px; }
+.tree-row:hover { background: color-mix(in srgb, var(--color-ink) 5%, transparent); }
+.tree-row.is-selected:hover { background: var(--color-accent-tint); }
+.tree-row--state { text-decoration: none; }
+
+.dv-wall {
+  min-height: 0;
+  overflow: auto;
+  padding: 34px 44px 64px;
+  background: var(--color-wall);
+  outline: none;
+  --dv-min: 288px;
+}
+
+.dv-wall > * + * { margin-top: 60px; }
+
+.dv-grid { grid-template-columns: repeat(auto-fill, minmax(min(var(--dv-min), 100%), 1fr)); }
+
+.dv-line-heading { margin: 20px 0 12px; }
+.option-set__head + .dv-line-heading { margin-top: 0; }
+
+.dv-search-row { padding: 0 16px 12px; background: var(--color-ground); border-bottom: 1px solid var(--color-rule); }
+.dv-search-status { display: contents; }
+
+/* Long size names on a phone: the full-width size rows scroll sideways
+   rather than squeezing or cutting the names. */
+@media (max-width: 767px) {
+  .top-bar--board .switcher,
+  .dv-focus .switcher--fill { overflow-x: auto; scrollbar-width: none; }
+  .top-bar--board .switcher::-webkit-scrollbar,
+  .dv-focus .switcher--fill::-webkit-scrollbar { display: none; }
+  .top-bar--board .switcher button,
+  .dv-focus .switcher--fill button { flex: 1 0 auto; min-width: max-content; padding: 0 12px; }
+}
+
+/* The Size menu (more than four sizes). A size the page does not offer is
+   greyed out, as in the size switcher. In the focus view's bottom bar on
+   phones the list opens upwards. */
+.size-menu__option:disabled { color: var(--color-rule-strong); cursor: default; }
+.size-menu__option:disabled:hover { background: transparent; }
+.size-menu__option:disabled .size-menu__option-dims { color: inherit; }
+.bottom-bar .size-menu__list { top: auto; bottom: calc(100% + 6px); }
+
+.dv-archive__body { padding-top: 4px; overflow: visible; }
+.dv-files { display: grid; gap: 6px; margin-top: 24px; }
+.dv-files a { color: var(--color-ink-soft); text-decoration: none; white-space: normal; overflow-wrap: anywhere; }
+.dv-files a:hover b { text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 767px) {
+  .dv-main { grid-template-columns: minmax(0, 1fr); }
+  .dv-wall { padding: 22px 16px 48px; }
+  .dv-wall > * + * { margin-top: 44px; }
+  .dv-grid { grid-template-columns: minmax(0, 1fr); }
+  .top-bar--board .top-bar__product span { overflow: hidden; text-overflow: ellipsis; }
+}
+
+/* ------------------------------------------------------------- frames */
+
+.dv-shot { --dv-scale: 0; }
+
+.dv-view {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  transform: scale(var(--dv-scale));
+}
+
+.dv-iframe {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: none;
+}
+
+.dv-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: var(--color-ink-faint);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+.dv-frame-open {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.dv-frame-open:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+
+/* A caption that offers a download. The label keeps a few characters; when
+   the links do not fit beside it they go under it, and in a very narrow
+   frame Download and Copy link stack, rather than run over the next frame. */
+.frame__caption:has(> .frame__links) { flex-wrap: wrap; row-gap: 2px; }
+.frame__caption:has(> .frame__links) > .frame__label { flex: 1 1 0; min-width: 6em; }
+.frame__caption > .frame__links { flex-wrap: wrap; justify-content: flex-end; max-width: 100%; margin-left: auto; }
+
+.dv-note { margin-top: -4px; font-size: 12.5px; line-height: 1.45; color: var(--color-ink-soft); }
+
+/* ---------------------------------------------------- media templates */
+
+/* A media page's group (media.ts) among a flow's frames. */
+.dv-grid + .dv-media,
+.dv-media + .dv-grid { margin-top: 56px; }
+
+/* A feed image wider than 3:1 is cut at the sides: the design's top and
+   bottom cut marks, turned. */
+.crop-edge--left,
+.crop-edge--right { top: 0; bottom: 0; width: 0; height: auto; border-top: 0; border-left: 1px dashed var(--mark-ink); }
+.crop-edge--left { left: 0; right: auto; }
+.crop-edge--right { left: auto; right: 0; }
+
+@media (max-width: 767px) {
+  .dv-grid + .dv-media,
+  .dv-media + .dv-grid { margin-top: 40px; }
+}
+
+/* ---------------------------------------------------------- focus view */
+
+.dv-focus {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  /* One column no wider than the screen, so the top bar's path gives way on phones. */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  background: var(--color-wall);
+}
+
+.dv-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 0;
+  overflow: hidden;
+  padding: 22px 48px 34px;
+  background: var(--color-wall);
+}
+
+.dv-stage--tall { overflow: auto; }
+
+.stage__cap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.stage__cap .frame__label { flex: 1; min-width: 0; }
+.stage__cap .tag { flex: none; }
+
+.dv-focus-figure { flex: none; }
+.dv-focus-shot { flex: none; aspect-ratio: auto; }
+
+.dv-focus-frame {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  border: 0;
+  transform-origin: 0 0;
+}
+
+.dv-shortcuts { position: fixed; top: 70px; right: 22px; z-index: 120; }
+
+.dv-focus .top-bar__start { min-width: 0; }
+.dv-focus .crumb { flex: 0 1 auto; min-width: 0; overflow: hidden; }
+.dv-focus .crumb > * { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.dv-focus .crumb > .crumb__sep { flex: none; }
+/* When the path does not fit, the product and flow give way first. */
+.dv-focus .crumb.dv-crumb--short > .desktop-only { display: none; }
+.dv-focus .crumb.dv-crumb--measure > * { flex-shrink: 0; }
+.dv-focus .crumb > b { flex-shrink: 0; max-width: 60%; }
+.dv-focus .stepper,
+.dv-focus .top-bar__close,
+.dv-focus .top-bar__divider { flex: none; }
+
+@media (max-width: 767px) {
+  .dv-focus .crumb { flex: 1; }
+  .dv-stage { justify-content: center; padding: 14px 16px 73px; }
+  /* No bottom bar for a page with one size of its own. */
+  .dv-focus--one-size .dv-stage { padding-bottom: 14px; }
+}
+
+/* -------------------------------------------------------------- preview */
+
+/* Frames grow to their whole page as they load and the preview keeps the
+   reader's place itself (preview.ts), so the browser's own scroll anchoring
+   is off here rather than moving the page a second time. */
+.dv-doc-app { min-height: 100vh; min-height: 100dvh; background: var(--color-wall); overflow-anchor: none; }
+.dv-banner { background: var(--color-ground); }
+.dv-content { padding: 8px 0 96px; background: var(--color-wall); }
+.dv-sec { padding-top: 44px; }
+.dv-content .collapsed { margin-top: 44px; }
+.dv-sec .option-set { margin-top: 20px; }
+
+.change-summary .dv-summary-zero {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 112px;
+  padding: 12px 18px 13px;
+  color: var(--color-ink-faint);
+  font-size: 12.5px;
+}
+
+.change-summary > * + * { border-left: 1px solid var(--color-rule); }
+.change-summary .dv-summary-zero b { font-family: var(--font-display); font-size: 30px; font-weight: 450; line-height: 1.05; color: var(--color-ink-faint); }
+
+.change__head .switcher { flex: none; }
+.compare-side .frame__shot { width: 100%; }
+
+.dv-overlay { width: 100%; }
+.dv-compare-layer { pointer-events: none; }
+.dv-overlay .overlay__line,
+.dv-overlay .overlay__knob,
+.dv-overlay .overlay__tag { z-index: 3; pointer-events: none; }
+
+.dv-compare-range {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  /* A whole page's overlay can be taller than the screen: a vertical swipe on it still scrolls the preview. */
+  touch-action: pan-y;
+}
+
+.dv-compare-range:focus-visible ~ .overlay__knob {
+  box-shadow: 0 0 0 1px var(--color-frame-edge), 0 0 0 4px var(--color-accent), var(--shadow-frame);
+}
+
+.dv-overlay-links { margin-top: 20px; }
+.dv-overlay-links a { text-decoration: underline; text-decoration-color: var(--color-rule-strong); text-underline-offset: 3px; }
+
+.archived-row .frame__shot { width: 100%; }
+.dv-added .frame__shot { width: 100%; }
+.dv-added { gap: 24px; }
+
+.dv-shared .token-table td:first-child { color: var(--color-ink); }
+.dv-token-where { color: var(--color-ink-faint); }
+.dv-token-arrow { color: var(--color-ink-faint); }
+.dv-none { color: var(--color-ink-faint); }
+.dv-warning { color: var(--color-ink); }
+
+@media (max-width: 767px) {
+  .dv-content { padding: 0 0 56px; }
+  .dv-sec { padding-top: 32px; }
+  .dv-content .collapsed { margin-top: 32px; }
+  .change-summary .dv-summary-zero { min-width: 0; padding: 10px 10px 11px 12px; font-size: 12px; line-height: 1.3; }
+  .change-summary .dv-summary-zero b { font-size: 26px; }
+}
+
+/* ------------------------------------------------------------------ hub */
+
+.dv-hub-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 40px; padding: 72px 0 44px; }
+
+.dv-hub-head h1 {
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.028em;
+}
+
+.dv-hub-head p { max-width: 560px; font-size: 16px; line-height: 1.55; color: var(--color-ink-soft); }
+.dv-hub-count { font-size: 13.5px; line-height: 1.6; color: var(--color-ink-faint); text-align: right; }
+.dv-hub-count span { display: block; }
+.dv-hub-foot { margin-top: 40px; padding-bottom: 48px; }
+
+.dv-cover,
+.dv-tile-wall { display: flex; align-items: center; justify-content: center; aspect-ratio: 1440 / 900; }
+.dv-cover > .frame__shot,
+.dv-tile-wall > .frame__shot { width: 100%; }
+.dv-cover > .dv-thumb--tall,
+.dv-tile-wall > .dv-thumb--tall { width: auto; height: 100%; }
+
+.dv-thumb { --dv-scale: 0; }
+.dv-thumb > iframe {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 0;
+  transform-origin: 0 0;
+  transform: scale(var(--dv-scale));
+  pointer-events: none;
+}
+
+.product-card:hover { border-color: var(--color-rule-strong); }
+
+@media (max-width: 767px) {
+  .dv-hub-head { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 40px 0 28px; }
+  .dv-hub-head h1 { font-size: 46px; }
+  .dv-hub-head p { font-size: 15px; }
+  .dv-hub-count { text-align: left; }
+  .dv-hub-count span { display: inline; }
+  .dv-hub-count span + span::before { content: " · "; }
+  .dv-hub-foot { margin-top: 32px; padding-bottom: 36px; }
+}
+
+/* ------------------------------------------------- waiting for review */
+
+/* Where the review list sits: above the boards on the hub home, at the top
+   of the wall on a board. */
+.dv-hub-reviews { margin-bottom: 56px; }
+.dv-wall > .dv-reviews + * { margin-top: 30px; }
+
+@media (max-width: 767px) {
+  .dv-hub-reviews { margin-bottom: 32px; }
+  .dv-wall > .dv-reviews + * { margin-top: 24px; }
+}
+
+/* --------------------------------------------------------- error page */
+
+.dv-error { padding-top: 56px; padding-bottom: 72px; }
+
+.dv-error__title {
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.022em;
+}
+
+.dv-error__lead { max-width: 640px; margin-bottom: 28px; font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); }
+
+.dv-findings {
+  margin: 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+@media (max-width: 767px) {
+  .dv-error { padding-top: 32px; }
+  .dv-error__title { font-size: 32px; }
+}
+
+/* ------------------------------------------- design system overview */
+
+.dv-ds { padding-bottom: 72px; }
+.dv-ds-section { padding-top: 56px; }
+.dv-ds-section .section-head { margin-bottom: 10px; }
+.dv-ds .collapsed { margin-top: 56px; }
+.dv-ds .page-foot { margin-top: 40px; }
+.dv-swatch-source { overflow-wrap: anywhere; }
+
+/* A colour the tool could not read: drawn as a hatch, never guessed. */
+[data-unknown] { background: repeating-linear-gradient(45deg, var(--color-rule) 0 4px, var(--color-surface) 4px 8px); }
+
+.page-tile .frame__shot { pointer-events: none; }
+.dv-overview .overview-card:hover,
+.dv-files-card .files-card:hover { border-color: var(--color-ink-faint); }
+.dv-overview .overview-card:focus-visible,
+.dv-files-card .files-card:focus-visible { outline-offset: 3px; }
+.dv-overview .overview-card__palette i { min-width: 0; }
+
+/* ---------------------------------------------------------- Files page */
+
+.dv-file-page { padding-top: 40px; padding-bottom: 72px; }
+.dv-file-page .page-foot { margin-top: 40px; }
+
+/* The links to each folder, up to four a row: many folders wrap onto more
+   rows instead of pushing the title aside. */
+.dv-folders { display: grid; grid-template-columns: repeat(var(--dv-folder-columns, 4), auto); }
+.dv-folders > a:nth-child(4n + 1) { border-left: 0; }
+.dv-folders > a:nth-child(n + 5) { border-top: 1px solid var(--color-rule); }
+
+@media (max-width: 767px) {
+  .dv-file-page { padding-top: 24px; padding-bottom: 48px; }
+  .dv-file-page .page-foot { margin-top: 28px; }
+  .dv-folders { grid-template-columns: repeat(var(--dv-folder-columns, 4), minmax(0, 1fr)); }
+}
+
+@media (max-width: 767px) {
+  .dv-ds { padding-bottom: 48px; }
+  .dv-ds-section { padding-top: 36px; }
+  .dv-ds .collapsed { margin-top: 36px; }
+  .dv-ds .page-foot { margin-top: 28px; }
+}

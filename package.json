@@ -1,0 +1,42 @@
+{
+  "name": "teallemur",
+  "version": "0.13.0",
+  "description": "Checks design repos of static HTML/CSS screens and builds a static design board, change previews and a hub page.",
+  "license": "MIT",
+  "author": "Betalgo",
+  "homepage": "https://github.com/betalgo/teallemur#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betalgo/teallemur.git"
+  },
+  "bugs": {
+    "url": "https://github.com/betalgo/teallemur/issues"
+  },
+  "private": true,
+  "type": "module",
+  "bin": {
+    "teallemur": "dist/cli.js",
+    "designroom": "dist/cli.js",
+    "design-viewer": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "schema"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "node scripts/build.mjs && node --test \"tests/**/*.test.ts\"",
+    "prepare": "node scripts/build.mjs",
+    "design:sync": "node scripts/design-source.ts sync",
+    "design:check": "node scripts/design-source.ts check"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "linkedom": "^0.18.13",
+    "typescript": "7.0.2"
+  }
+}

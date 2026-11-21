@@ -1,0 +1,26 @@
+/* Component classes, built only from tokens. */
+.button {
+  display: inline-flex;
+  padding: calc(var(--space-m) / 2) var(--space-m);
+  border: 1px solid transparent;
+  border-radius: var(--radius-m);
+  background: var(--colour-accent);
+  color: var(--colour-bg);
+  font: 600 1rem/1.5 var(--font-body);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.button--ghost {
+  background: transparent;
+  color: currentColor;
+  box-shadow: 0 0 0 2px rgb(var(--colour-accent-rgb) / 0.4);
+}
+
+.field-error {
+  color: var(--colour-danger, inherit);
+  font-family: var(--font-body), sans-serif;
+}
+
+.red-flag-label {
+  text-decoration: underline;
+}

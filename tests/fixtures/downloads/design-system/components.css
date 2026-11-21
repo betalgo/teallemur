@@ -1,0 +1,2 @@
+.media { background: var(--colour-paper); color: var(--colour-ink); font-family: var(--font-ui); }
+.page { padding: 24px; font-family: var(--font-ui); color: var(--colour-ink); }

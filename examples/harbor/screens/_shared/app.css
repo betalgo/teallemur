@@ -1,0 +1,163 @@
+/* The app shell: notebooks, the note list and the open note. */
+
+.app {
+  display: grid;
+  grid-template-columns: 232px 360px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+  padding: var(--space-l) var(--space-m);
+  background: var(--colour-sidebar);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: 600;
+}
+
+.notebooks {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notebooks a {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-s) var(--space-s);
+  border-radius: var(--radius-s);
+  color: var(--colour-text);
+  text-decoration: none;
+}
+
+.notebooks a[aria-current] {
+  background: var(--colour-surface);
+  font-weight: 600;
+}
+
+.notebooks .count { color: var(--colour-text-muted); }
+
+.label {
+  margin: 0 var(--space-s) var(--space-xs);
+  color: var(--colour-text-muted);
+  font-size: var(--text-s);
+  font-weight: 600;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  padding: var(--space-l);
+  border-right: 1px solid var(--colour-line);
+}
+
+.list__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.search { position: relative; }
+
+.search svg {
+  position: absolute;
+  top: 13px;
+  left: 12px;
+  color: var(--colour-text-muted);
+}
+
+.notes {
+  display: grid;
+  gap: var(--space-s);
+}
+
+.note {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+  min-height: 100vh;
+  padding: var(--space-xl) 64px;
+  background: var(--colour-surface);
+}
+
+.note__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--colour-text-muted);
+  font-size: var(--text-s);
+}
+
+.note__title { font-size: var(--text-xl); }
+
+.note__body {
+  max-width: 640px;
+  font-size: 16px;
+}
+
+.note__body p { margin: 0 0 var(--space-m); }
+
+.checklist {
+  display: grid;
+  gap: var(--space-s);
+  margin: 0 0 var(--space-m);
+  padding: 0;
+  list-style: none;
+}
+
+.checklist li {
+  display: flex;
+  gap: var(--space-s);
+  align-items: baseline;
+}
+
+.checklist .done {
+  color: var(--colour-text-muted);
+  text-decoration: line-through;
+}
+
+.empty {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: var(--space-m);
+  padding: var(--space-xl);
+  text-align: center;
+}
+
+.empty p {
+  max-width: 320px;
+  margin: 0;
+  color: var(--colour-text-muted);
+}
+
+.empty svg { color: var(--colour-accent); }
+
+.phone-only { display: none; }
+
+/* Phone: one column. The list is the home screen; a note opens on its own. */
+@media (max-width: 720px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar, .note--beside-list { display: none; }
+  .list { border-right: 0; padding: var(--space-m); }
+  .note { padding: var(--space-l) var(--space-m); }
+  .note__title { font-size: 26px; }
+  .phone-only { display: initial; }
+  .new-note {
+    position: fixed;
+    right: var(--space-m);
+    bottom: var(--space-l);
+    box-shadow: var(--shadow-card);
+  }
+}

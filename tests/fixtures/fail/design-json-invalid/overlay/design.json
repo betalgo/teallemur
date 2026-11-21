@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "name": "Example App",
+  "slug": "Example App",
+  "viewports": [{ "id": "desktop", "width": 1440, "height": 900 }],
+  "flows": [{ "id": "auth", "title": "Sign in" }, { "id": "settings", "title": "Settings" }]
+}

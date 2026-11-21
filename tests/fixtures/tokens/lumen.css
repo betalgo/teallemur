@@ -1,0 +1,42 @@
+/* A fixture with naming unlike the samples: camelCase, short words,
+   modern colour syntax, references, a dark ground and a theme override. */
+
+@font-face {
+  font-family: "Reader Serif";
+  src: url("assets/fonts/reader-serif.woff2") format("woff2");
+  font-weight: 400 700;
+}
+
+:root {
+  --gray-100: oklch(0.97 0.01 280);
+  --gray-900: oklch(0.2 0.03 285);
+  --gold-500: #F2B544;
+
+  --canvas: var(--gray-900); /* app background */
+  --raised: color-mix(in srgb, var(--gray-900) 85%, white); /* cards and sheets */
+  --fgPrimary: var(--gray-100); /* reading text */
+  --fgMuted: #9C96B0;
+  --onGold: #14121D; /* labels on gold buttons */
+  --gold: var(--gold-500);
+  --cta: var(--gold-500); /* the one action per screen */
+  --hairline: rgb(255 255 255 / 12%);
+  --danger: hsl(5 70% 55%);
+  --missing-colour: var(--does-not-exist);
+
+  --typeface-body: "Geist", system-ui, sans-serif;
+  --typeface-title: "Reader Serif", Georgia, serif; /* book titles */
+  --fs-1: 0.75rem;
+  --fs-2: 1rem;
+  --lh-tight: 1.2;
+  --rounded-card: 12px;
+  --gap-s: 8px;
+  --elevation-1: 0 1px 2px rgb(0 0 0 / 40%);
+  --z-dialog: 40;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --canvas: white;
+  }
+}

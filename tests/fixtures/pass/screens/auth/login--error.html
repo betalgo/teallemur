@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login · error</title>
+<meta name="design:order" content="20">
+<meta name="design:viewports" content="desktop, phone">
+<meta name="design:note" content="Shown after three failed attempts.">
+<link rel="stylesheet" href="../../design-system/tokens.css">
+<link rel="stylesheet" href="../../design-system/components.css">
+<link rel="stylesheet" href="../_shared/layout.css">
+<style>
+  .notice { border-left: 4px solid var(--colour-danger); padding-left: var(--space-m); }
+</style>
+</head>
+<body>
+<main class="page">
+  <h1>Sign in to Example App</h1>
+  <p class="notice field-error" style="font-weight: 600; color: var(--colour-danger)">That password did not match. Try again or reset it.</p>
+  <button class="button" type="button" id="reset">Reset password</button>
+  <script>
+    document.getElementById('reset').addEventListener('click', () => { document.body.dataset.state = 'sent'; });
+  </script>
+</main>
+</body>
+</html>

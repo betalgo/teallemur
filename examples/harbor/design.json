@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "name": "Harbor",
+  "slug": "harbor",
+  "viewports": [
+    { "id": "desktop", "width": 1440, "height": 900 },
+    { "id": "phone", "width": 390, "height": 844 }
+  ],
+  "flows": [
+    { "id": "auth", "title": "Sign in" },
+    { "id": "notes", "title": "Notes" }
+  ]
+}

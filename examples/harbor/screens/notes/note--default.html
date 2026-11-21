@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Note · default</title>
+<meta name="design:order" content="30">
+<meta name="design:viewports" content="phone">
+<meta name="design:note" content="On a phone a note opens on its own screen. Back returns to the list.">
+<meta name="design:links" content=".back -> notes/inbox--default">
+<link rel="stylesheet" href="../../design-system/tokens.css">
+<link rel="stylesheet" href="../../design-system/components.css">
+<link rel="stylesheet" href="../_shared/app.css">
+</head>
+<body>
+<article class="note">
+  <div class="note__bar">
+    <a class="button button--quiet back" href="inbox--default.html">‹ All notes</a>
+    <span class="saved">Saved</span>
+  </div>
+  <h1 class="note__title">Launch checklist</h1>
+  <div class="note-card__meta"><span class="tag">Launch</span> <span class="avatars"><span class="avatar">AK</span><span class="avatar">LM</span></span></div>
+  <div class="note__body">
+    <p>Everything left before Thursday. Tick it off as you go; Lena sees the same list.</p>
+    <ul class="checklist">
+      <li><input type="checkbox" checked aria-label="Done"> <span class="done">Final prices on the pricing page</span></li>
+      <li><input type="checkbox" checked aria-label="Done"> <span class="done">Screenshots for the store listing</span></li>
+      <li><input type="checkbox" aria-label="Done"> <span>Welcome email: one thing to try in the first minute</span></li>
+      <li><input type="checkbox" aria-label="Done"> <span>Last pass on the onboarding screens</span></li>
+    </ul>
+    <p>After launch: read every reply to the welcome email for the first week.</p>
+  </div>
+</article>
+</body>
+</html>

@@ -1,0 +1,37 @@
+/* Harbor: the only file with colours and font names. */
+:root {
+  --colour-bg: #f4f1ea;                 /* page ground */
+  --colour-surface: #fffdf9;            /* cards, the editor and dialogs */
+  --colour-sidebar: #e9e4d8;            /* the notebook list */
+  --colour-text: #1b2333;               /* body text and headings */
+  --colour-text-muted: #5c6474;         /* dates, counts and hints */
+  --colour-text-on-accent: #ffffff;     /* text on the accent */
+  --colour-line: #ddd6c7;               /* card edges and dividers */
+  --colour-accent: #2a55c9;             /* the one primary action */
+  --colour-accent-subtle: #e4eafa;      /* the selected note and notebook */
+  --colour-pin: #e8a93b;                /* pinned notes */
+  --colour-success: #2c7a52;            /* saved */
+  --colour-danger: #b8412c;             /* errors */
+
+  --font-body: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-display: Georgia, "Times New Roman", serif;
+
+  --text-s: 13px;
+  --text-m: 15px;
+  --text-l: 20px;
+  --text-xl: 30px;
+  --line-tight: 1.25;
+  --line-body: 1.55;
+
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 18px;
+
+  --space-xs: 4px;
+  --space-s: 8px;
+  --space-m: 16px;
+  --space-l: 24px;
+  --space-xl: 40px;
+
+  --shadow-card: 0 1px 2px rgb(27 35 51 / 0.06), 0 6px 20px rgb(27 35 51 / 0.07);
+}

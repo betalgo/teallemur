@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Teal Lemur">
+<title>Teal Lemur</title>
+<!-- The Teal Lemur mark on the 16 grid, for favicons, browser tabs and other
+     16 px places: corners 4, irises r 2.7, pupils r 1.2, eyes 0.75 above
+     centre. A standalone master, so its colours are written here as
+     literals; they match the mark tokens in design-system/tokens.css: the
+     tile is color-mark-tile (teal #2A6866), the eyes color-mark-eye (amber
+     #E8A23A, logo only), the pupils color-mark-pupil (ink #1E1C19). -->
+<rect width="16" height="16" rx="4" fill="#2A6866"/>
+<circle cx="4.9" cy="7.25" r="2.7" fill="#E8A23A"/>
+<circle cx="11.1" cy="7.25" r="2.7" fill="#E8A23A"/>
+<circle cx="4.9" cy="7.25" r="1.2" fill="#1E1C19"/>
+<circle cx="11.1" cy="7.25" r="1.2" fill="#1E1C19"/>
+</svg>

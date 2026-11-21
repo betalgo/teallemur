@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inbox · default</title>
+<meta name="design:order" content="10">
+<meta name="design:note" content="The home screen. On desktop the first note is open beside the list.">
+<meta name="design:links" content=".note-card--selected -> notes/note--default">
+<link rel="stylesheet" href="../../design-system/tokens.css">
+<link rel="stylesheet" href="../../design-system/components.css">
+<link rel="stylesheet" href="../_shared/app.css">
+</head>
+<body>
+<div class="app">
+  <nav class="sidebar" aria-label="Notebooks">
+    <div class="brand"><img src="../../design-system/assets/logo.svg" alt="" width="28" height="28"> Harbor</div>
+    <a class="button button--primary button--wide" href="note--default.html">New note</a>
+    <ul class="notebooks">
+      <li><a href="#" aria-current="page">All notes <span class="count">24</span></a></li>
+      <li><a href="#">Pinned <span class="count">3</span></a></li>
+      <li><a href="#">Shared with me <span class="count">5</span></a></li>
+    </ul>
+    <div>
+      <p class="label">Notebooks</p>
+      <ul class="notebooks">
+        <li><a href="#">Launch <span class="count">9</span></a></li>
+        <li><a href="#">Research <span class="count">7</span></a></li>
+        <li><a href="#">Personal <span class="count">8</span></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="list" aria-label="Notes">
+    <div class="list__head">
+      <h1>All notes</h1>
+      <span class="hint">24 notes</span>
+    </div>
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <input class="input input--search" type="search" placeholder="Search notes" aria-label="Search notes">
+    </div>
+    <div class="notes">
+      <a class="note-card note-card--selected" href="note--default.html">
+        <span class="note-card__title"><span class="pin" aria-label="Pinned"></span>Launch checklist</span>
+        <span class="note-card__text">Everything left before Thursday: pricing page copy, the welcome email and a last pass on the onboarding screens.</span>
+        <span class="note-card__meta"><span class="tag">Launch</span> Edited 10 min ago</span>
+      </a>
+      <a class="note-card" href="#">
+        <span class="note-card__title"><span class="pin" aria-label="Pinned"></span>Interview notes: Lena</span>
+        <span class="note-card__text">Runs a three-person studio. Keeps notes in four places and loses the ones clients send by email.</span>
+        <span class="note-card__meta"><span class="tag">Research</span> Yesterday</span>
+      </a>
+      <a class="note-card" href="#">
+        <span class="note-card__title">Ideas for the welcome email</span>
+        <span class="note-card__text">Lead with one thing to try in the first minute. Skip the feature tour.</span>
+        <span class="note-card__meta"><span class="tag">Launch</span> Monday</span>
+      </a>
+      <a class="note-card" href="#">
+        <span class="note-card__title">Weekend in Porto</span>
+        <span class="note-card__text">Train at 9:40. Book the tile museum. Ask Sam about the bakery near the river.</span>
+        <span class="note-card__meta"><span class="tag">Personal</span> 12 Nov</span>
+      </a>
+    </div>
+    <a class="button button--primary new-note phone-only" href="note--default.html">New note</a>
+  </section>
+
+  <article class="note note--beside-list">
+    <div class="note__bar">
+      <span class="avatars"><span class="avatar">AK</span><span class="avatar">LM</span></span>
+      <span class="saved">Saved</span>
+    </div>
+    <h2 class="note__title">Launch checklist</h2>
+    <div class="note__body">
+      <p>Everything left before Thursday. Tick it off as you go; Lena sees the same list.</p>
+      <ul class="checklist">
+        <li><input type="checkbox" checked aria-label="Done"> <span class="done">Final prices on the pricing page</span></li>
+        <li><input type="checkbox" checked aria-label="Done"> <span class="done">Screenshots for the store listing</span></li>
+        <li><input type="checkbox" aria-label="Done"> <span>Welcome email: one thing to try in the first minute</span></li>
+        <li><input type="checkbox" aria-label="Done"> <span>Last pass on the onboarding screens</span></li>
+      </ul>
+      <p>After launch: read every reply to the welcome email for the first week.</p>
+    </div>
+  </article>
+</div>
+</body>
+</html>

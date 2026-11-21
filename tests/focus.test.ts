@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { parseHTML } from 'linkedom';
+import type { Cell, ViewerData } from '../src/model.ts';
+import { Context } from '../src/viewer/context.ts';
+import { openFocus } from '../src/viewer/focus.ts';
+
+test('focus keys route, show help, ignore editing and detach listeners on close', () => {
+  const { document, window } = parseHTML('<html><body></body></html>');
+  Object.assign(window, { location: { href: 'http://localhost/example/' } });
+  window.HTMLElement.prototype.focus = () => undefined;
+  Object.assign(globalThis, { document, window });
+  const cells: Cell[] = ['default', 'error'].map((state) => ({ path: `screens/auth/login--${state}.html`, root: 'head', viewport: 'phone', col: 'phone', label: state, title: state, viewports: ['phone'] }));
+  const data: ViewerData = { kind: 'board', product: { name: '', slug: 'example' }, commit: null, viewports: [{ id: 'phone', width: 390, height: 844 }], flows: [{ id: 'auth', title: '' }], roots: { head: '', base: '_base/' }, board: [{ id: 'auth', kind: 'flow', title: '', align: true, columns: ['phone'], lines: cells.map((c) => ({ cells: [c] })) }] };
+  const ctx = new Context(data);
+  const calls: string[] = [];
+  ctx.focus = (cell) => calls.push(cell.path);
+  ctx.navigate = (_cell, view) => calls.push(view);
+  document.documentElement.style.overflow = 'auto';
+  const cleanup = openFocus(ctx, cells[0]!);
+  const key = (key: string, target: Document | Element = document, extra = {}): void => {
+    target.dispatchEvent(Object.assign(new window.Event('keydown', { bubbles: true, cancelable: true }), { key, ...extra }));
+  };
+  key('ArrowRight');
+  assert.deepEqual(calls, [cells[1]!.path]);
+  key('?');
+  assert.equal(document.querySelector<HTMLElement>('.dv-shortcuts')?.hidden, false);
+  key('?');
+  assert.equal(document.querySelector<HTMLElement>('.dv-shortcuts')?.hidden, true);
+  const input = document.createElement('input');
+  document.body.append(input);
+  key('ArrowRight', input);
+  key('ArrowRight', document, { ctrlKey: true });
+  assert.equal(calls.length, 1);
+  key('Escape', input);
+  assert.equal(calls[1], 'board');
+  cleanup();
+  key('ArrowRight');
+  assert.equal(calls.length, 2);
+  assert.equal(document.documentElement.style.overflow, 'auto');
+  assert.equal(document.querySelector('.dv-focus'), null);
+});

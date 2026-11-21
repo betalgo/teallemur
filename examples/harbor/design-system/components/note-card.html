@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Note card · states</title>
+<meta name="design:viewports" content="desktop">
+<meta name="design:note" content="The selected card is the note open beside the list. A dot marks a pinned note.">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  .cards { display: grid; grid-template-columns: repeat(2, 340px); gap: var(--space-m); padding: var(--space-xl); }
+</style>
+</head>
+<body>
+<div class="cards">
+  <a class="note-card" href="#">
+    <span class="note-card__title">Ideas for the welcome email</span>
+    <span class="note-card__text">Lead with one thing to try in the first minute. Skip the feature tour.</span>
+    <span class="note-card__meta"><span class="tag">Launch</span> Monday</span>
+  </a>
+  <a class="note-card note-card--selected" href="#">
+    <span class="note-card__title"><span class="pin" aria-label="Pinned"></span>Launch checklist</span>
+    <span class="note-card__text">Everything left before Thursday: pricing page copy, the welcome email and a last pass on the onboarding screens.</span>
+    <span class="note-card__meta"><span class="tag">Launch</span> Edited 10 min ago</span>
+  </a>
+</div>
+</body>
+</html>

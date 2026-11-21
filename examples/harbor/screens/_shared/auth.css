@@ -1,0 +1,30 @@
+/* Sign-in and sign-up: one card in the middle of the page. */
+
+.auth {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: var(--space-l) var(--space-m);
+}
+
+.auth__card {
+  display: grid;
+  gap: var(--space-m);
+  width: 100%;
+  max-width: 400px;
+  padding: var(--space-xl);
+  border: 1px solid var(--colour-line);
+  border-radius: var(--radius-l);
+  background: var(--colour-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.auth__card h1 { font-size: 28px; }
+.auth__card .hint { margin: calc(var(--space-s) * -1) 0 var(--space-s); }
+.auth__card .auth__foot { margin: var(--space-s) 0 0; text-align: center; }
+.auth__brand { margin-bottom: var(--space-s); }
+
+@media (max-width: 720px) {
+  .auth { place-items: start stretch; padding-top: var(--space-xl); }
+  .auth__card { padding: var(--space-l); border: 0; box-shadow: none; background: transparent; }
+}

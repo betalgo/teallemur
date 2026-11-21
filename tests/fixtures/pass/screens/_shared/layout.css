@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  background: var(--colour-bg);
+  color: var(--colour-text);
+  font-family: var(--font-body);
+}
+
+.page {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: var(--space-m);
+}

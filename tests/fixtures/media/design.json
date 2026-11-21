@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "Harbor media",
+  "slug": "harbor-media",
+  "viewports": [
+    { "id": "linkedin-profile-banner", "width": 1584, "height": 396 },
+    { "id": "linkedin-company-cover", "width": 1512, "height": 256 },
+    { "id": "linkedin-company-logo", "width": 400, "height": 400 },
+    { "id": "linkedin-feed-post", "width": 1080, "height": 1350 },
+    { "id": "linkedin-feed-post-tall", "width": 1080, "height": 1920 },
+    { "id": "linkedin-feed-post-square", "width": 1080, "height": 1080 },
+    { "id": "linkedin-feed-post-wide", "width": 1600, "height": 400 }
+  ],
+  "flows": [
+    { "id": "linkedin", "title": "LinkedIn" }
+  ]
+}

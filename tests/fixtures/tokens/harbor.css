@@ -1,0 +1,112 @@
+/* Harbor tokens, as the design system overview mock lists them. */
+:root {
+  --color-background: #FFFFFF; /* Page background */
+  --color-nav: #13203A; /* Sidebar */
+  --color-surface-muted: #F3F5F9; /* Lists, side panels and wells */
+  --color-surface-sunken: #EBEEF4; /* Search field and empty states */
+  --color-nav-selected: #24365F; /* Selected sidebar row */
+  --color-text: #121826; /* Body text and titles */
+  --color-text-muted: #677084; /* Dates, previews, secondary text */
+  --color-text-placeholder: #9AA2B1; /* Placeholders */
+  --color-text-on-accent: #FFFFFF; /* Text on accent buttons */
+  --color-nav-text: #AEBBD4; /* Sidebar text */
+  --color-nav-text-strong: #FFFFFF; /* Names and the selected row in the sidebar */
+  --color-accent: #2F5BD3; /* Buttons, links and selection */
+  --color-accent-hover: #2449B0; /* Accent under the pointer */
+  --color-accent-subtle: #E8EEFC; /* Selected rows */
+  --color-focus-ring: #6A8EF0; /* Keyboard focus */
+  --color-border: #E2E6ED; /* Dividers */
+  --color-border-strong: #C9CFDA; /* Field edges */
+  --color-status-success: #1F8A5B; /* Saved and synced */
+  --color-status-success-subtle: #E3F4EC;
+  --color-status-warning-subtle: #FDF2D3; /* Warning banners */
+  --color-status-warning-text: #7A5200; /* Text on warning banners */
+  --color-status-danger: #C8372D; /* Delete and errors */
+  --color-status-danger-subtle: #FCE9E7;
+  --color-highlight: #FFE58A; /* Search matches */
+  --color-notebook-1: #3B6FE0; /* Notebook labels */
+  --color-notebook-2: #1F9D74;
+  --color-notebook-3: #D9822B;
+  --color-notebook-4: #A35BC9;
+  --color-notebook-5: #D2455B;
+  --color-notebook-6: #5C6B82;
+  --palette-blue-50: #EEF3FE;
+  --palette-blue-100: #DCE6FD;
+  --palette-blue-200: #BCCEFA;
+  --palette-blue-300: #93AFF5;
+  --palette-blue-400: #6A8EF0;
+  --palette-blue-500: #4672E6;
+  --palette-blue-600: #2F5BD3;
+  --palette-blue-700: #2449B0;
+  --palette-blue-800: #1E3A87;
+  --palette-blue-900: #172A5E;
+  --palette-gray-50: #F8F9FB;
+  --palette-gray-100: #F3F5F9;
+  --palette-gray-200: #E2E6ED;
+  --palette-gray-300: #C9CFDA;
+  --palette-gray-400: #9AA2B1;
+  --palette-gray-500: #7F889A;
+  --palette-gray-600: #677084;
+  --palette-gray-700: #4A5263;
+  --palette-gray-800: #2B3242;
+  --palette-gray-900: #121826;
+  --palette-green-50: #F0F9F4;
+  --palette-green-100: #E3F4EC;
+  --palette-green-200: #C3E6D4;
+  --palette-green-300: #94D1B3;
+  --palette-green-400: #5DB78D;
+  --palette-green-500: #33A070;
+  --palette-green-600: #1F8A5B;
+  --palette-green-700: #1A6F4A;
+  --palette-green-800: #16573B;
+  --palette-green-900: #10402C;
+  --palette-red-50: #FEF4F3;
+  --palette-red-100: #FCE9E7;
+  --palette-red-200: #F8CBC6;
+  --palette-red-300: #F0A097;
+  --palette-red-400: #E5705F;
+  --palette-red-500: #D84E40;
+  --palette-red-600: #C8372D;
+  --palette-red-700: #A52B23;
+  --palette-red-800: #82241E;
+  --palette-red-900: #5E1B17;
+  --font-ui: "Inter", system-ui, sans-serif; /* Interface and notes */
+  --font-reading: "Instrument Serif", Georgia, serif; /* Note titles in reading mode */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-xl: 26px;
+  --text-2xl: 34px;
+  --text-display: 48px;
+  --leading-tight: 1.15;
+  --leading-normal: 1.45;
+  --leading-reading: 1.65;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --radius-row: 4px;
+  --radius-control: 6px;
+  --radius-card: 10px;
+  --radius-dialog: 16px;
+  --radius-pill: 999px;
+  --shadow-raised: 0 1px 2px rgb(18 24 38 / 8%);
+  --shadow-menu: 0 6px 18px -4px rgb(18 24 38 / 16%);
+  --shadow-dialog: 0 24px 60px -12px rgb(18 24 38 / 28%);
+  --duration-quick: 120ms;
+  --duration-calm: 240ms;
+  --layer-menu: 20;
+  --layer-dialog: 40;
+  --weight-medium: 550;
+  --weight-bold: 650;
+  --sidebar-width: 236px;
+  --list-width: 384px;
+}

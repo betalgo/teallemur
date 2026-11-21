@@ -1,0 +1,20 @@
+/* The one token file. Literals are allowed here and nowhere else. */
+:root {
+  --colour-bg: #ffffff;
+  --colour-text: #1b1d21;
+  --colour-muted: rgb(92 96 104);
+  --colour-accent: #3355ff;
+  --colour-accent-rgb: 51 85 255;
+  --colour-danger: crimson;
+  --font-body: "Example Sans", system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --radius-m: 8px;
+  --space-m: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --colour-bg: #111214;
+    --colour-text: #f2f2f3;
+  }
+}

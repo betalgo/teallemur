@@ -1,0 +1,79 @@
+/* Made by design:sync from design-system/tokens.css at a470688270da3efd78ea91f7b44707bdd17c6697. Do not edit; see design-source.json. */
+@font-face {
+  font-family: "Newsreader";
+  src: url("assets/fonts/newsreader-Newsreader[opsz,wght].ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("assets/fonts/instrumentsans-InstrumentSans[wdth,wght].ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("assets/fonts/geistmono-GeistMono[wght].ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --palette-amber-400: #E8A23A;
+
+  --color-ground: #F4F1EA;
+  --color-surface: #FBF9F5;
+  --color-wall: #ECE8DF;
+  --color-ink: #1E1C19;
+  --color-ink-soft: #55504A;
+  --color-ink-faint: #67625A;
+  --color-rule: #DCD6CB;
+  --color-rule-strong: #C4BCAE;
+
+  --color-accent: #2A6866;
+  --color-accent-strong: #22524F;
+  --color-accent-tint: #DCEAE6;
+  --color-on-accent: #FBF9F5;
+
+  --color-ground-inverse: #1E1C19;
+  --color-ink-inverse: #F4F1EA;
+  --color-ink-inverse-soft: #A9A397;
+  --color-rule-inverse: #3A3631;
+
+  --color-mark-tile: var(--color-accent);
+  --color-mark-eye: var(--palette-amber-400);
+  --color-mark-pupil: var(--color-ink);
+
+  --color-frame-edge: color-mix(in srgb, var(--color-ink) 13%, transparent);
+  --color-scrim: color-mix(in srgb, var(--color-ink) 30%, transparent);
+  --shadow-frame: 0 1px 1px color-mix(in srgb, var(--color-ink) 5%, transparent), 0 8px 22px -12px color-mix(in srgb, var(--color-ink) 22%, transparent);
+  --shadow-raised: 0 1px 2px color-mix(in srgb, var(--color-ink) 6%, transparent), 0 24px 60px -20px color-mix(in srgb, var(--color-ink) 30%, transparent);
+
+  --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-ui: "Instrument Sans", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --radius-frame: 2px;
+  --radius-inner: 4px;
+  --radius-control: 6px;
+  --radius-card: 10px;
+  --radius-panel: 14px;
+  --radius-pill: 999px;
+}
+
+:root {
+  --outline-radius-card: 8;
+  --outline-radius-control: 6;
+  --outline-radius-bar: 2;
+  --outline-radius-logo: 24;
+  --outline-radius-logo-phone: 12;
+
+  --mark-ink: var(--color-ink);
+  --mark-halo: var(--color-surface);
+  --mark-hatch: color-mix(in srgb, var(--color-ink) 34%, transparent);
+}

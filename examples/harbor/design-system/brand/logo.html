@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Logo · on paper and on the accent</title>
+<meta name="design:viewports" content="desktop">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  .logos { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .logos > div { display: grid; place-items: center; gap: var(--space-m); align-content: center; }
+  .logos .on-accent { background: var(--colour-accent); color: var(--colour-text-on-accent); }
+  .wordmark { font-family: var(--font-display); font-size: 56px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="logos">
+  <div><img src="../assets/logo.svg" alt="Harbor" width="160" height="160"><span class="wordmark">Harbor</span></div>
+  <div class="on-accent"><img src="../assets/logo.svg" alt="Harbor" width="160" height="160"><span class="wordmark">Harbor</span></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "repository": "betalgo/designroom-design",
+  "commit": "a470688270da3efd78ea91f7b44707bdd17c6697",
+  "files": [
+    { "from": "design-system/assets/teallemur-mark.svg", "to": "src/viewer/design/assets/mark.svg" },
+    { "from": "design-system/assets/teallemur-mark-16.svg", "to": "src/viewer/design/assets/mark-16.svg" },
+    { "from": "design-system/assets/fonts/newsreader-Newsreader[opsz,wght].ttf", "to": "src/viewer/design/assets/fonts/newsreader-Newsreader[opsz,wght].ttf" },
+    { "from": "design-system/assets/fonts/newsreader-OFL.txt", "to": "src/viewer/design/assets/fonts/newsreader-OFL.txt" },
+    { "from": "design-system/assets/fonts/instrumentsans-InstrumentSans[wdth,wght].ttf", "to": "src/viewer/design/assets/fonts/instrumentsans-InstrumentSans[wdth,wght].ttf" },
+    { "from": "design-system/assets/fonts/instrumentsans-OFL.txt", "to": "src/viewer/design/assets/fonts/instrumentsans-OFL.txt" },
+    { "from": "design-system/assets/fonts/geistmono-GeistMono[wght].ttf", "to": "src/viewer/design/assets/fonts/geistmono-GeistMono[wght].ttf" },
+    { "from": "design-system/assets/fonts/geistmono-OFL.txt", "to": "src/viewer/design/assets/fonts/geistmono-OFL.txt" }
+  ],
+  "transcribed": [
+    {
+      "from": "design-system/tokens.css",
+      "to": "src/viewer/design/tokens.css",
+      "transform": "tokens",
+      "why": "Comments removed; sample-product tokens (--sample-*) and @font-face rules for fonts not copied above removed. Every other token and value is unchanged."
+    },
+    {
+      "from": "design-system/components.css",
+      "to": "src/viewer/design/components.css",
+      "transform": "styles",
+      "why": "Comments removed. Every rule is unchanged."
+    }
+  ]
+}

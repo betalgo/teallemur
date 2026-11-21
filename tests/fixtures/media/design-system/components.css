@@ -1,0 +1,4 @@
+body { margin: 0; font-family: var(--font-ui); }
+.media { display: flex; flex-direction: column; justify-content: center; gap: 24px; box-sizing: border-box; padding: 0 8%; background: var(--color-sea); color: var(--color-foam); }
+.media h1 { margin: 0; font-size: 96px; line-height: 1; }
+.media p { margin: 0; font-size: 40px; color: var(--color-sun); }

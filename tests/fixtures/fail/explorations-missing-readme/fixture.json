@@ -1,0 +1,1 @@
+{ "rule": "explorations/missing-readme", "remove": ["explorations/2026-01-15-onboarding/README.md"] }

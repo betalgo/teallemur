@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Teal Lemur">
+<title>Teal Lemur</title>
+<!-- The Teal Lemur mark on the 32 grid: a teal rounded square with two amber
+     eyes, a little above centre so it reads as a face (picked 2026-10-18).
+     This master is a standalone file, so its colours are written here as
+     literals. They match the mark tokens in design-system/tokens.css: the
+     tile is color-mark-tile (teal #2A6866), the eyes color-mark-eye (amber
+     #E8A23A, logo only), the pupils color-mark-pupil (ink #1E1C19). Pages
+     inline the mark with the .mark__ classes instead of copying these. -->
+<rect width="32" height="32" rx="8" fill="#2A6866"/>
+<circle cx="9.8" cy="14.5" r="5.4" fill="#E8A23A"/>
+<circle cx="22.2" cy="14.5" r="5.4" fill="#E8A23A"/>
+<circle cx="9.8" cy="14.5" r="2.4" fill="#1E1C19"/>
+<circle cx="22.2" cy="14.5" r="2.4" fill="#1E1C19"/>
+</svg>

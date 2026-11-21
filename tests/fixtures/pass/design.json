@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "name": "Example App",
+  "slug": "example-app",
+  "viewports": [
+    { "id": "desktop", "width": 1440, "height": 900 },
+    { "id": "tablet-portrait", "width": 768, "height": 1024 },
+    { "id": "phone", "width": 390, "height": 844 }
+  ],
+  "flows": [
+    { "id": "auth", "title": "Sign in and sign up" },
+    { "id": "settings", "title": "Settings" }
+  ]
+}

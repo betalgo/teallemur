@@ -1,0 +1,23 @@
+/* Fieldwork tokens, as the design system overview mock lists them. */
+:root {
+  --bg: #FFFFFF;
+  --bg-panel: #F6F4F0; /* People column and weekends */
+  --text: #1D1B18;
+  --text-soft: #75706A; /* Roles and dates */
+  --on-brand: #FFFFFF; /* Text on orange buttons */
+  --brand: #D9572B; /* Buttons, today, front desk shifts */
+  --brand-tint: #FBE7DE;
+  --line: #E7E2DA;
+  --error: #C2362B;
+  --warning: #9A6412; /* Shifts nobody has taken */
+  --site: #2E8B66; /* Site shifts */
+  --site-tint: #DDF1E8;
+  --font: "Hanken Grotesk", system-ui, sans-serif; /* Everything */
+  --size-small: 12px;
+  --size-body: 14px;
+  --size-title: 22px;
+  --radius-small: 4px;
+  --radius: 8px;
+  --row-height: 44px;
+  --header-height: 64px;
+}

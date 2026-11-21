@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Button · kinds</title>
+<meta name="design:viewports" content="desktop">
+<meta name="design:note" content="One primary button per screen. Quiet buttons for going back and cancelling.">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  .row { display: flex; gap: var(--space-m); align-items: center; padding: var(--space-xl); }
+</style>
+</head>
+<body>
+<div class="row">
+  <button class="button button--primary" type="button">New note</button>
+  <button class="button" type="button">Share</button>
+  <button class="button button--quiet" type="button">Cancel</button>
+</div>
+</body>
+</html>
