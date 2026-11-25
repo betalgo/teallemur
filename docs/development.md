@@ -88,6 +88,22 @@ to the viewer's look, open an issue.
 
 The images in `docs/images/` show `examples/harbor`, built with `build` at
 1440 × 900 with the board at Phone size. The preview shows one change on top of
-it: the inbox groups pinned notes under "Pinned" and "Recent", and
-`--colour-pin` changes. When the viewer changes visibly, build them again the
-same way and replace the images.
+it: the inbox groups pinned notes under "Pinned" and "Recent" (a
+`<p class="label">` line before each group in
+`screens/notes/inbox--default.html`), and `--colour-pin` changes to `#d9822b`.
+When the viewer changes visibly, build them again the same way and replace the
+images:
+
+1. Copy `examples/harbor` into a new folder, `git init` it and commit: that's
+   the base. Make the change above on a branch and commit it: that's the head.
+2. Clone the base into another folder with
+   `git -c core.autocrlf=false clone`, so line endings stay LF. Otherwise every
+   file counts as changed.
+3. Build the board and its overview from the base clone:
+   `teallemur build <base clone> --out <dir>`. Build the preview from the head:
+   `teallemur build <head> --out <dir> --base <base clone> --label "PR 14: pinned notes at the top"`.
+   The preview should count 1 changed screen and 1 token change.
+4. Take each picture at 1440 × 900 and a device scale of 1:
+   - the board at Phone, scrolled to the Notes flow;
+   - the preview at Phone, from the top;
+   - the overview page, from the top.

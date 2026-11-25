@@ -1,20 +1,20 @@
 /* Harbor: the only file with colours and font names. */
 :root {
-  --colour-bg: #f4f1ea;                 /* page ground */
-  --colour-surface: #fffdf9;            /* cards, the editor and dialogs */
-  --colour-sidebar: #e9e4d8;            /* the notebook list */
-  --colour-text: #1b2333;               /* body text and headings */
-  --colour-text-muted: #5c6474;         /* dates, counts and hints */
+  --colour-bg: #f3f5f9;                 /* page ground */
+  --colour-surface: #ffffff;            /* cards, the editor and dialogs */
+  --colour-sidebar: #e6ebf4;            /* the notebook list */
+  --colour-text: #121826;               /* body text and headings */
+  --colour-text-muted: #5b6475;         /* dates, counts and hints */
   --colour-text-on-accent: #ffffff;     /* text on the accent */
-  --colour-line: #ddd6c7;               /* card edges and dividers */
-  --colour-accent: #2a55c9;             /* the one primary action */
-  --colour-accent-subtle: #e4eafa;      /* the selected note and notebook */
+  --colour-line: #dce1ea;               /* card edges and dividers */
+  --colour-accent: #2f5bd3;             /* the one primary action */
+  --colour-accent-subtle: #e6edfd;      /* the selected note and notebook */
   --colour-pin: #e8a93b;                /* pinned notes */
   --colour-success: #2c7a52;            /* saved */
   --colour-danger: #b8412c;             /* errors */
 
   --font-body: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
-  --font-display: Georgia, "Times New Roman", serif;
+  --font-display: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
 
   --text-s: 13px;
   --text-m: 15px;
