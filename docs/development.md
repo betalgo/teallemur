@@ -80,9 +80,14 @@ working tree, and refuse a shortened SHA. `design:check` exits non-zero when a
 file differs.
 
 The design repo is private, so only Betalgo's maintainers can run these two
-scripts, and CI does not run them. Don't edit the copied files under
-`src/viewer/design/` by hand: the next sync overwrites them. To suggest a change
-to the viewer's look, open an issue.
+scripts. CI runs `design:check` on every push to main and on pull requests from
+this repository's own branches. Pull requests from forks skip it, because they
+get no secrets. Every Monday, `.github/workflows/design-pin-update.yml` compares
+the pinned files with the design repo's main. When they differ, it opens a pull
+request that moves the pin, for a maintainer to finish with `design:sync`.
+
+Don't edit the copied files under `src/viewer/design/` by hand: the next sync
+overwrites them. To suggest a change to the viewer's look, open an issue.
 
 ## Screenshots
 

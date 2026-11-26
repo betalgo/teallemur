@@ -1,0 +1,274 @@
+# Weekly design pin check (company decision 0023; betalgo-docs design/code-repos.md, "Updating the pin").
+# Every code repo with design-source.json has this file. Only runs-on and the action pins differ.
+#
+# It compares the pinned design files (the `from` of every `files` and `transcribed` entry) at the pinned
+# commit with the design repo's main. If none changed, it does nothing. If any changed, it opens one
+# "Update the design pin" pull request from main: the new main commit in design-source.json, the `files`
+# entries copied at that commit (as design:sync does), and the changed files and tokens listed. CI's
+# design:check and the usual design QA judge it. When main changes the pinned files again, a new pull
+# request replaces the open one. One closed without merging is not opened again for the same files.
+name: Design pin update
+
+on:
+  schedule:
+    - cron: "23 5 * * 1" # Mondays 05:23 UTC
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: Only report what would change, and open no pull request
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: design-pin-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: design pin update
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out main
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          ref: main
+      - name: Set up Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: "24"
+      - name: Read the design pin
+        id: pin
+        env:
+          HAS_READ_TOKEN: ${{ secrets.DESIGN_REPOS_READ_TOKEN != '' }}
+        run: |
+          node --input-type=module <<'JS'
+          import { appendFileSync, readFileSync } from 'node:fs';
+          const pin = JSON.parse(readFileSync('design-source.json', 'utf8'));
+          const paths = [...new Set([...(pin.files ?? []), ...(pin.transcribed ?? [])].map((entry) => entry.from))];
+          if (!/^betalgo\/[\w.-]+$/.test(pin.repository) || !/^[0-9a-f]{40}$/.test(pin.commit)) throw new Error('Invalid design pin');
+          if (!paths.length || paths.some((path) => !/^[\w.,[\]-]+(\/[\w.,[\]-]+)*$/.test(path))) throw new Error('Invalid design file path');
+          const ready = process.env.HAS_READ_TOKEN === 'true';
+          if (!ready) console.log(`::warning title=Design pin check skipped::This repository has no DESIGN_REPOS_READ_TOKEN secret, so it cannot read ${pin.repository}. The founder sets it (betalgo-docs design/design-hub.md, CI secrets).`);
+          // Sparse-checkout patterns: anchored at the root, with [ and ] escaped so they match literally.
+          const patterns = paths.map((path) => `/${path.replace(/[[\]]/g, '\\$&')}`);
+          appendFileSync(process.env.GITHUB_OUTPUT, `repository=${pin.repository}\nready=${ready}\npaths<<PATHS\n${patterns.join('\n')}\nPATHS\n`);
+          JS
+      # The history without file contents (to compare the pin with main) and the pinned files at main. The old
+      # contents of changed files are fetched on demand for the token comparison.
+      - name: Check out the design repo's main
+        if: steps.pin.outputs.ready == 'true'
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          repository: ${{ steps.pin.outputs.repository }}
+          ref: main
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout: ${{ steps.pin.outputs.paths }}
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.DESIGN_REPOS_READ_TOKEN }}
+          path: .design-pin-source
+      - name: Open or replace the design pin pull request
+        if: steps.pin.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DRY_RUN: ${{ inputs.dry-run == true }}
+        run: |
+          node --input-type=module <<'JS'
+          import { execFileSync } from 'node:child_process';
+          import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+          import { dirname } from 'node:path';
+
+          const source = '.design-pin-source';
+          const prefix = 'design-pin-update/';
+          const dryRun = process.env.DRY_RUN === 'true';
+          const run = (args, encoding = 'utf8') => execFileSync('git', args, { encoding, maxBuffer: 1 << 28, stdio: ['ignore', 'pipe', 'pipe'] });
+          const git = (...args) => run(args).trim();
+          const show = (revision) => run(['-C', source, 'show', revision], 'buffer');
+          const blob = (commit, path) => { try { return git('-C', source, 'rev-parse', '--verify', '--quiet', `${commit}:${path}`); } catch { return null; } };
+          const say = (text) => { console.log(text); appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${text}\n`); };
+          const api = async (method, path, body) => {
+            const response = await fetch(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}${path}`, {
+              method, body: body && JSON.stringify(body),
+              headers: { accept: 'application/vnd.github+json', authorization: `Bearer ${process.env.GH_TOKEN}`, 'x-github-api-version': '2022-11-28' },
+            });
+            if (!response.ok) throw new Error(`${method} ${path}: ${response.status} ${await response.text()}`);
+            return response.status === 204 ? null : response.json();
+          };
+          const bot = '41898282+github-actions[bot]@users.noreply.github.com';
+          // Every page, so an old declined update still counts.
+          const pulls = async (state) => {
+            const found = [];
+            for (let page = 1; ; page += 1) {
+              const batch = await api('GET', `/pulls?state=${state}&per_page=100&page=${page}`);
+              found.push(...batch.filter((pull) => pull.head.ref.startsWith(prefix) && pull.head.repo?.full_name === process.env.GITHUB_REPOSITORY));
+              if (batch.length < 100) return found;
+            }
+          };
+          // A pull request this job closed loses its target marker, so it never counts as declined.
+          const target = (pull) => pull.body?.match(/<!-- design-pin-target: ([0-9a-f]{40}) -->/)?.[1];
+          // Closes pull requests this job opened. A branch that holds only the job's commit is deleted; one that
+          // people added commits to is kept, and the numbers of those pull requests are returned.
+          const close = async (list, note) => {
+            const kept = [];
+            for (const pull of list) {
+              say(`${dryRun ? 'Would close' : 'Closing'} #${pull.number}: ${note}`);
+              if (dryRun) continue;
+              const commits = await api('GET', `/pulls/${pull.number}/commits?per_page=100`);
+              // The committer as well as the author: amending the job's commit keeps its author.
+              const own = commits.every((commit) => commit.commit.author?.email === bot && commit.commit.committer?.email === bot);
+              const body = (pull.body ?? '').replace('<!-- design-pin-target:', '<!-- design-pin-closed-target:');
+              await api('PATCH', `/pulls/${pull.number}`, { state: 'closed', body: `**${note}**${own ? '' : ' Its branch is kept, because people added commits to it.'}\n\n${body}` });
+              if (own) await api('DELETE', `/git/refs/heads/${pull.head.ref}`).catch(() => {});
+              else kept.push(pull.number);
+            }
+            return kept;
+          };
+          // Custom properties in a CSS file, keyed by name and the rule they sit in (:root is left out).
+          const tokens = (css) => {
+            const found = new Map();
+            const scope = [];
+            let text = '';
+            const declare = () => {
+              const match = text.trim().match(/^(--[\w-]+)\s*:([\s\S]*)$/);
+              if (match) {
+                const where = scope.filter((selector) => selector !== ':root').join(' › ');
+                found.set(`${match[1]}\u0000${where}`, { name: match[1], where, value: match[2].trim().replace(/\s+/g, ' ') });
+              }
+              text = '';
+            };
+            for (const char of css.replace(/\/\*[\s\S]*?\*\//g, '')) {
+              if (char === '{') { scope.push(text.trim().replace(/\s+/g, ' ')); text = ''; }
+              else if (char === '}') { declare(); scope.pop(); }
+              else if (char === ';') declare();
+              else text += char;
+            }
+            return found;
+          };
+          const cell = (value) => {
+            const text = String(value).replace(/\s+/g, ' ');
+            return `\`${(text.length > 80 ? `${text.slice(0, 79)}…` : text).replace(/`/g, "'").replace(/\|/g, '\\|')}\``;
+          };
+          const table = (header, rows, limit = 150) => rows.length === 0 ? [] : [
+            `| ${header.join(' | ')} |`, `| ${header.map(() => '---').join(' | ')} |`,
+            ...rows.slice(0, limit).map((row) => `| ${row.join(' | ')} |`),
+            ...(rows.length > limit ? [`\nAnd ${rows.length - limit} more.`] : []), '',
+          ];
+
+          // Returns early when there is nothing to do.
+          const main = async () => {
+          const pinText = readFileSync('design-source.json', 'utf8');
+          const pin = JSON.parse(pinText);
+          const files = pin.files ?? [];
+          const transcribed = pin.transcribed ?? [];
+          const paths = [...new Set([...files, ...transcribed].map((entry) => entry.from))];
+          const latest = git('-C', source, 'rev-parse', 'HEAD');
+          const short = (commit) => commit.slice(0, 7);
+          const same = (a, b) => paths.every((path) => blob(a, path) === blob(b, path));
+          if (files.some((entry) => !/^(?!\/)(?!.*(^|\/)\.\.?(\/|$))[^\\:]+$/.test(entry.to))) throw new Error('Invalid copy destination in design-source.json');
+          try { git('-C', source, 'merge-base', '--is-ancestor', pin.commit, latest); }
+          catch { throw new Error(`The pinned commit ${pin.commit} is not on ${pin.repository} main.`); }
+
+          const open = await pulls('open');
+          const changed = paths.filter((path) => blob(pin.commit, path) !== blob(latest, path));
+          if (changed.length === 0) {
+            say(`The ${paths.length} pinned design files are the same on ${pin.repository} main (${short(latest)}) as at the pin (${short(pin.commit)}). Nothing to do.`);
+            await close(open, 'Closed: the design pin on main already has these files.');
+            return;
+          }
+          const gone = changed.filter((path) => !blob(latest, path));
+          if (gone.length) throw new Error(`${pin.repository} main no longer has ${gone.join(', ')}. Change design-source.json by hand.`);
+          const current = open.find((pull) => target(pull) && same(target(pull), latest));
+          if (current) {
+            say(`#${current.number} already moves the pin to these design files. Nothing to do.`);
+            return;
+          }
+          const declined = (await pulls('closed')).find((pull) => !pull.merged_at && target(pull) && same(target(pull), latest));
+          if (declined) {
+            say(`#${declined.number} made this update and was closed without merging, so it is not opened again. The job tries again when ${pin.repository} main changes the pinned files.`);
+            return;
+          }
+
+          // Copy the changed `files` entries at the new commit, and move the pin.
+          const copied = files.filter((entry) => changed.includes(entry.from));
+          for (const entry of copied) {
+            mkdirSync(dirname(entry.to), { recursive: true });
+            writeFileSync(entry.to, show(`${latest}:${entry.from}`));
+          }
+          writeFileSync('design-source.json', pinText.replace(pin.commit, latest));
+
+          // Which app files mention a token, leaving out the design copies themselves.
+          const mentions = (name) => {
+            try {
+              return git('grep', '-lE', '-e', `${name}([^A-Za-z0-9_-]|$)`, '--', '.', ...[...files, ...transcribed].map((entry) => `:(exclude,literal)${entry.to}`)).split('\n').length;
+            } catch { return 0; }
+          };
+          const body = [
+            `The weekly design pin check found pinned files that changed on \`${pin.repository}\` main, so this pull request moves the pin there. It follows "Updating the pin" in betalgo-docs \`design/code-repos.md\` and contains nothing else.`,
+            '',
+            `- **Old commit:** \`${pin.commit}\``,
+            `- **New commit:** \`${latest}\``,
+            '',
+            '## Changed design files',
+            '',
+            ...table(['Design file', 'Copied to'], changed.map((path) => [cell(path), [
+              ...files.filter((entry) => entry.from === path).map((entry) => cell(entry.to)),
+              ...transcribed.filter((entry) => entry.from === path).map((entry) => `${cell(entry.to)} (transcribed: **update it by hand**)`),
+            ].join('<br>')])),
+            '## Tokens added, changed or removed',
+            '',
+          ];
+          for (const path of changed.filter((path) => path.endsWith('.css'))) {
+            const before = tokens(show(`${pin.commit}:${path}`).toString('utf8'));
+            const after = tokens(show(`${latest}:${path}`).toString('utf8'));
+            const label = (token) => `${cell(token.name)}${token.where ? ` in ${cell(token.where)}` : ''}`;
+            const rows = [
+              ...[...after].filter(([key]) => !before.has(key)).map(([, token]) => ['Added', label(token), '', cell(token.value), mentions(token.name)]),
+              ...[...after].filter(([key, token]) => before.has(key) && before.get(key).value !== token.value).map(([key, token]) => ['Changed', label(token), cell(before.get(key).value), cell(token.value), mentions(token.name)]),
+              ...[...before].filter(([key]) => !after.has(key)).map(([, token]) => ['Removed', label(token), cell(token.value), '', mentions(token.name)]),
+            ];
+            body.push(`### ${cell(path)}`, '');
+            if (rows.length) body.push(...table(['', 'Token', 'Old value', 'New value', 'App files that mention it'], rows));
+            else body.push('No token was added, changed or removed. Other parts of the file changed.', '');
+          }
+          if (!changed.some((path) => path.endsWith('.css'))) body.push('None: no CSS file changed.', '');
+          body.push(
+            '## Before merging',
+            '',
+            '- **Start CI.** GitHub does not run CI on a pull request that GitHub Actions opened. Close and reopen this pull request to start it.',
+            ...(changed.some((path) => transcribed.some((entry) => entry.from === path)) ? ['- **Update the transcribed files by hand**, following this repo\'s rule for them, or design:check fails.'] : []),
+            '- **Add which screens look different**, with before and after screenshots. With no visible change, an agent merges when CI is green. A visible change goes to the founder.',
+            '',
+            `<!-- design-pin-target: ${latest} -->`,
+          );
+          const text = body.join('\n');
+          say(text);
+          if (dryRun) return;
+
+          const title = `Update the design pin to ${pin.repository.split('/')[1]}@${short(latest)}`;
+          const branch = `${prefix}${short(latest)}`;
+          git('switch', '--quiet', '--create', branch);
+          git('add', '--', 'design-source.json', ...copied.map((entry) => entry.to));
+          git('-c', 'user.name=github-actions[bot]', '-c', `user.email=${bot}`,
+            'commit', '--quiet', '-m', title, '-m', `Changed design files:\n${changed.map((path) => `- ${path}`).join('\n')}`);
+          // A branch left by an earlier failed run has no open pull request. It is this job's own, so replace it.
+          if (git('ls-remote', 'origin', `refs/heads/${branch}`)) await api('DELETE', `/git/refs/heads/${branch}`);
+          git('push', '--quiet', 'origin', `HEAD:refs/heads/${branch}`);
+          const created = await api('POST', '/pulls', { title, head: branch, base: 'main', body: text.length > 65000 ? `${text.slice(0, 64000)}\n\n(Cut short: see the job summary.)\n\n<!-- design-pin-target: ${latest} -->` : text });
+          say(`Opened #${created.number}: ${created.html_url}`);
+          const kept = await close(open, `Replaced by #${created.number}, which moves the pin to a newer design commit.`);
+          if (kept.length) {
+            const note = `**Carry over** the commits people added to ${kept.map((number) => `#${number}`).join(', ')}, which this pull request replaces.`;
+            // Under "Before merging", or above the target marker when a long body was cut short.
+            const body = created.body.includes('## Before merging\n')
+              ? created.body.replace('## Before merging\n', `## Before merging\n\n- ${note}`)
+              : created.body.replace('<!-- design-pin-target:', `${note}\n\n<!-- design-pin-target:`);
+            await api('PATCH', `/pulls/${created.number}`, { body });
+          }
+          };
+          await main();
+          JS
