@@ -1,7 +1,7 @@
-/* Made by design:sync from design-system/tokens.css at a470688270da3efd78ea91f7b44707bdd17c6697. Do not edit; see design-source.json. */
+/* Made by design:sync from design-system/tokens.css at 117392eb905fc3d0b7dd34f630bab03f35d49f29. Do not edit; see design-source.json. */
 @font-face {
   font-family: "Newsreader";
-  src: url("assets/fonts/newsreader-Newsreader[opsz,wght].ttf") format("truetype");
+  src: url("assets/fonts/newsreader-Newsreader.woff2") format("woff2");
   font-weight: 200 800;
   font-style: normal;
   font-display: swap;
@@ -9,7 +9,7 @@
 
 @font-face {
   font-family: "Instrument Sans";
-  src: url("assets/fonts/instrumentsans-InstrumentSans[wdth,wght].ttf") format("truetype");
+  src: url("assets/fonts/instrumentsans-InstrumentSans.woff2") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -17,7 +17,7 @@
 
 @font-face {
   font-family: "Geist Mono";
-  src: url("assets/fonts/geistmono-GeistMono[wght].ttf") format("truetype");
+  src: url("assets/fonts/geistmono-GeistMono.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -76,4 +76,37 @@
   --mark-ink: var(--color-ink);
   --mark-halo: var(--color-surface);
   --mark-hatch: color-mix(in srgb, var(--color-ink) 34%, transparent);
+}
+
+:root {
+  --palette-betalgo-forest-800: #2A4239;
+  --palette-betalgo-rowan-600: #B85333;
+  --palette-betalgo-birch-100: #F5F2EA;
+  --palette-betalgo-ink-950: #161A18;
+  --palette-betalgo-ink-700: #4A4F4C;
+  --palette-betalgo-forest-100: #C9D2CC;
+  --palette-betalgo-birch-50: #FBF9F3;
+
+  --color-text: var(--palette-betalgo-ink-950);
+  --color-text-soft: var(--palette-betalgo-ink-700);
+  --color-text-inverse: var(--palette-betalgo-birch-50);
+  --color-brand: var(--palette-betalgo-forest-800);
+  --color-brand-tint: var(--palette-betalgo-forest-100);
+
+  --color-focus: transparent;
+  --font-wordmark: "Schibsted Grotesk", sans-serif;
+  --font-text: "Schibsted Grotesk", sans-serif;
+  --text-small: 13px;
+  --space-2: 8px;
+  --motion-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+
+  --color-betalgo-accent: var(--palette-betalgo-rowan-600);
+  --color-betalgo-ground: var(--palette-betalgo-birch-100);
+
+  --star-point: var(--color-brand);
+  --star-point-alt: var(--color-text);
+  --star-seed: var(--color-betalgo-accent);
+  --star-seam: var(--color-betalgo-ground);
 }

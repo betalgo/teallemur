@@ -1,14 +1,14 @@
 {
   "repository": "betalgo/designroom-design",
-  "commit": "a470688270da3efd78ea91f7b44707bdd17c6697",
+  "commit": "117392eb905fc3d0b7dd34f630bab03f35d49f29",
   "files": [
     { "from": "design-system/assets/teallemur-mark.svg", "to": "src/viewer/design/assets/mark.svg" },
     { "from": "design-system/assets/teallemur-mark-16.svg", "to": "src/viewer/design/assets/mark-16.svg" },
-    { "from": "design-system/assets/fonts/newsreader-Newsreader[opsz,wght].ttf", "to": "src/viewer/design/assets/fonts/newsreader-Newsreader[opsz,wght].ttf" },
+    { "from": "design-system/assets/fonts/newsreader-Newsreader.woff2", "to": "src/viewer/design/assets/fonts/newsreader-Newsreader.woff2" },
     { "from": "design-system/assets/fonts/newsreader-OFL.txt", "to": "src/viewer/design/assets/fonts/newsreader-OFL.txt" },
-    { "from": "design-system/assets/fonts/instrumentsans-InstrumentSans[wdth,wght].ttf", "to": "src/viewer/design/assets/fonts/instrumentsans-InstrumentSans[wdth,wght].ttf" },
+    { "from": "design-system/assets/fonts/instrumentsans-InstrumentSans.woff2", "to": "src/viewer/design/assets/fonts/instrumentsans-InstrumentSans.woff2" },
     { "from": "design-system/assets/fonts/instrumentsans-OFL.txt", "to": "src/viewer/design/assets/fonts/instrumentsans-OFL.txt" },
-    { "from": "design-system/assets/fonts/geistmono-GeistMono[wght].ttf", "to": "src/viewer/design/assets/fonts/geistmono-GeistMono[wght].ttf" },
+    { "from": "design-system/assets/fonts/geistmono-GeistMono.woff2", "to": "src/viewer/design/assets/fonts/geistmono-GeistMono.woff2" },
     { "from": "design-system/assets/fonts/geistmono-OFL.txt", "to": "src/viewer/design/assets/fonts/geistmono-OFL.txt" }
   ],
   "transcribed": [
